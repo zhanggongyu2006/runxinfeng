@@ -126,11 +126,32 @@
   }
   const form = document.getElementById("contactForm");
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      const data = new FormData(form);
       const name = (form.querySelector('[name="name"]') || {}).value || "访客";
-      showToast("感谢您的留言，" + name + "！我们将在 1 个工作日内与您联系。");
-      form.reset();
+      data.append("_subject", "官网留言：" + name + " · " + (data.get("type") || "咨询"));
+      if (btn) { btn.disabled = true; btn.textContent = "提交中…"; }
+      try {
+        const res = await fetch("https://formspree.io/f/myegdeok", {
+          method: "POST",
+          body: data,
+          headers: { Accept: "application/json" },
+        });
+        if (res.ok) {
+          showToast("提交成功！我们将在 1 个工作日内与您联系。");
+          form.reset();
+        } else {
+          const err = await res.json().catch(() => ({}));
+          const msg = err.errors && err.errors[0] ? err.errors[0].message : "提交失败，请稍后重试";
+          showToast(msg);
+        }
+      } catch (err) {
+        showToast("网络异常，提交失败，请直接拨打电话 13565221821");
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = "提交留言 →"; }
+      }
     });
   }
 

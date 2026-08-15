@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>联系我们 · 百草源中药</title>
+  <meta name="description" content="联系百草源中药科技有限公司：咨询道地药材、获取样品与报价。">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="aurora" aria-hidden="true">
+    <div class="aurora__orb aurora__orb--blue"></div>
+    <div class="aurora__orb aurora__orb--violet"></div>
+    <div class="aurora__orb aurora__orb--cyan"></div>
+    <div class="aurora__grid"></div>
+  </div>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html"><span class="brand__mark">百</span><span class="brand__text">百草源<small>中药</small></span></a>
+      <nav class="nav__links" id="navLinks">
+        <a href="index.html">首页</a>
+        <a href="products.html">产品介绍</a>
+        <a href="industry.html">行业动态</a>
+        <a href="news.html">新闻中心</a>
+        <a href="about.html">关于我们</a>
+        <a href="contact.html" class="active">联系我们</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="btn btn--ghost" href="contact.html">在线咨询</a>
+        <button class="nav__toggle" id="navToggle" aria-label="菜单"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="container">
+        <span class="tag">CONTACT</span>
+        <h1>联系我们</h1>
+        <p>无论是样品索取、批量采购还是定制加工，欢迎随时联系我们，专业团队为您服务。</p>
+        <div class="breadcrumb"><a href="index.html">首页</a><span>/</span><span>联系我们</span></div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:20px">
+      <div class="container contact-grid">
+        <div class="contact-info reveal">
+          <div class="cinfo"><div class="ico">📍</div><div><b>公司地址</b><span>安徽省亳州市中药材产业园区</span></div></div>
+          <div class="cinfo"><div class="ico">📞</div><div><b>咨询热线</b><span>400-888-6666（周一至周五 9:00-18:00）</span></div></div>
+          <div class="cinfo"><div class="ico">✉️</div><div><b>电子邮箱</b><span>hello@baicaoyuan.cn</span></div></div>
+          <div class="cinfo"><div class="ico">💬</div><div><b>商务合作</b><span>欢迎添加微信：baicaoyuan（备注「采购」）</span></div></div>
+        </div>
+        <form class="form reveal d1" id="contactForm">
+          <h3>在线留言</h3>
+          <p>填写您的需求，我们将在 1 个工作日内与您联系。</p>
+          <div class="row">
+            <div class="field"><label for="name">您的姓名 *</label><input id="name" name="name" type="text" placeholder="请输入姓名" required></div>
+            <div class="field"><label for="phone">联系电话 *</label><input id="phone" name="phone" type="tel" placeholder="请输入手机号" required></div>
+          </div>
+          <div class="field"><label for="company">公司名称</label><input id="company" name="company" type="text" placeholder="请输入公司名称（选填）"></div>
+          <div class="field"><label for="type">需求类型</label>
+            <select id="type" name="type">
+              <option>样品索取</option>
+              <option>批量采购</option>
+              <option>定制加工</option>
+              <option>基地合作</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="field"><label for="msg">留言内容 *</label><textarea id="msg" name="msg" placeholder="请描述您需要的品种、规格与用量…" required></textarea></div>
+          <button class="btn btn--primary" type="submit" style="width:100%">提交留言 →</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <a class="brand" href="index.html"><span class="brand__mark">百</span><span class="brand__text">百草源<small>中药</small></span></a>
+          <p class="about">专注道地中药材的种植、加工与供应链服务，以匠心守本草，用品质赢信赖。</p>
+        </div>
+        <div class="footer__col">
+          <h4>快速导航</h4>
+          <ul><li><a href="index.html">首页</a></li><li><a href="products.html">产品介绍</a></li><li><a href="industry.html">行业动态</a></li><li><a href="news.html">新闻中心</a></li></ul>
+        </div>
+        <div class="footer__col">
+          <h4>关于我们</h4>
+          <ul><li><a href="about.html">公司简介</a></li><li><a href="about.html#history">发展历程</a></li><li><a href="about.html#quality">品质保障</a></li><li><a href="contact.html">联系我们</a></li></ul>
+        </div>
+        <div class="footer__col">
+          <h4>联系我们</h4>
+          <ul class="footer__contact">
+            <li>📍 安徽省亳州市中药材产业园区</li>
+            <li>📞 400-888-6666</li>
+            <li>✉️ hello@baicaoyuan.cn</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year></span> 百草源中药科技有限公司 · 版权所有</span>
+        <span>道地药材 · 匠心品质</span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="toTop" id="toTop" aria-label="回到顶部">↑</button>
+  <div class="toast" id="toast"></div>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

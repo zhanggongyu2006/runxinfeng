@@ -159,4 +159,112 @@
   document.querySelectorAll("[data-year]").forEach((el) => {
     el.textContent = new Date().getFullYear();
   });
+
+  /* ---------- 水波背景：鼠标涟漪 + 滚动波纹 + 光晕视差 ---------- */
+  (function waterRipple() {
+    const aurora = document.querySelector(".aurora");
+    if (!aurora) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "ripple-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;";
+    aurora.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+
+    let W = 0, H = 0;
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      W = canvas.clientWidth = window.innerWidth;
+      H = canvas.clientHeight = window.innerHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const ripples = [];
+    let mx = W / 2, my = H / 2;
+    let cx = 0, cy = 0;
+    let t = 0;
+
+    function addRipple(x, y, s) {
+      if (reduced || ripples.length > 70) return;
+      ripples.push({
+        x, y, r: 3, a: 0.30,
+        maxR: 50 + s * 55,
+        sp: 1.3 + Math.random() * 1.5,
+        gold: Math.random() > 0.45,
+        ph: Math.random() * Math.PI * 2,
+        wob: 5 + Math.random() * 4
+      });
+    }
+
+    // 鼠标移动 → 涟漪 + 视差目标
+    let lastM = 0;
+    window.addEventListener("mousemove", (e) => {
+      mx = e.clientX; my = e.clientY;
+      const now = performance.now();
+      if (!reduced && now - lastM > 80) { lastM = now; addRipple(mx, my, 0.7); }
+    }, { passive: true });
+    window.addEventListener("touchmove", (e) => {
+      if (e.touches[0]) { mx = e.touches[0].clientX; my = e.touches[0].clientY; }
+      if (!reduced) addRipple(mx, my, 0.5);
+    }, { passive: true });
+
+    // 滚动 → 随机波纹
+    let lastS = 0;
+    window.addEventListener("scroll", () => {
+      const now = performance.now();
+      if (!reduced && now - lastS > 100) {
+        lastS = now;
+        addRipple(W * (0.15 + Math.random() * 0.7), H * (0.12 + Math.random() * 0.75), 0.9);
+      }
+    }, { passive: true });
+
+    // 空闲时偶尔自动泛起微澜（水面的"活"感）
+    setInterval(() => {
+      if (!reduced) addRipple(W * (0.1 + Math.random() * 0.8), H * (0.1 + Math.random() * 0.8), 0.4);
+    }, 2600);
+
+    function frame(now) {
+      t = now;
+      // 光晕视差（平滑跟随鼠标）
+      const tx = (mx / W - 0.5) * 22;
+      const ty = (my / H - 0.5) * 14;
+      cx += (tx - cx) * 0.06;
+      cy += (ty - cy) * 0.06;
+      if (!reduced) aurora.style.transform = "translate3d(" + cx + "px," + cy + "px,0)";
+
+      // 绘制水波
+      ctx.clearRect(0, 0, W, H);
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const rp = ripples[i];
+        rp.r += rp.sp;
+        rp.a *= 0.975;
+        if (rp.a < 0.015 || rp.r > rp.maxR) { ripples.splice(i, 1); continue; }
+        for (let k = 0; k < 3; k++) {
+          const rr = rp.r - k * 8;
+          if (rr < 2) continue;
+          const alpha = rp.a * (1 - k * 0.32);
+          const col = rp.gold ? "201,151,63" : "46,107,79";
+          ctx.beginPath();
+          // 波浪形的圆（水波抖动）
+          for (let a = 0; a <= Math.PI * 2 + 0.1; a += 0.22) {
+            const rad = rr + Math.sin(a * rp.wob + rp.ph + now * 0.003) * 1.6;
+            const px = rp.x + Math.cos(a) * rad;
+            const py = rp.y + Math.sin(a) * rad;
+            if (a === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.strokeStyle = "rgba(" + col + "," + alpha + ")";
+          ctx.lineWidth = 1.3;
+          ctx.stroke();
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
 })();

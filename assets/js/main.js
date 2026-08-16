@@ -162,6 +162,7 @@
 
   /* ---------- 水波背景：鼠标涟漪 + 滚动波纹 + 光晕视差 ---------- */
   (function waterRipple() {
+    try {
     const aurora = document.querySelector(".aurora");
     if (!aurora) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -176,10 +177,12 @@
     let W = 0, H = 0;
     function resize() {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      W = canvas.clientWidth = window.innerWidth;
-      H = canvas.clientHeight = window.innerHeight;
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     resize();
@@ -266,5 +269,6 @@
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+    } catch (e) { console.warn("水波背景异常：", e); }
   })();
 })();
